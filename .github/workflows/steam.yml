@@ -1,0 +1,31 @@
+name: Update Steam data
+on:
+  schedule:
+    - cron: "0 */5 * * *"
+  push:
+  workflow_dispatch:
+jobs:
+  steam:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: GildedRoach/metrics@main
+        with:
+          token: ${{ secrets.METRICS_TOKEN }}
+          config_timezone: America/Chicago
+          retries: 3
+          retries_delay: 300
+          config_display: large
+          config_output: svg
+          base: ""
+          plugin_steam: yes
+          plugin_steam_token: ${{ secrets.STEAM_TOKEN }}
+          plugin_steam_user: ${{ secrets.STEAM_UID }}
+          plugin_steam_games_ignored: ${{ secrets.STEAM_HIDDEN }}
+          plugin_steam_sections: player, most-played, recently-played
+          plugin_steam_achievements_limit: 0
+          plugin_steam_games_limit: 6
+          plugin_steam_recent_games_limit: 6
+          plugins_errors_fatal: yes
+          filename: profile/steam.svg
